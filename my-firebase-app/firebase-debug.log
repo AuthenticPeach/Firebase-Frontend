@@ -1,0 +1,108 @@
+[debug] [2024-11-11T04:41:44.383Z] ----------------------------------------------------------------------
+[debug] [2024-11-11T04:41:44.388Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-11-11T04:41:44.388Z] CLI Version:   13.24.2
+[debug] [2024-11-11T04:41:44.388Z] Platform:      win32
+[debug] [2024-11-11T04:41:44.389Z] Node Version:  v22.8.0
+[debug] [2024-11-11T04:41:44.389Z] Time:          Sun Nov 10 2024 20:41:44 GMT-0800 (Pacific Standard Time)
+[debug] [2024-11-11T04:41:44.389Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-11T04:41:44.403Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-11-11T04:41:44.404Z] > authorizing via signed-in user (travis.peach@sjsu.edu)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  G:\Lets Learn\Coding\Firebase-Frontend\my-firebase-app
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-11-11T04:59:24.379Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T04:59:24.379Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T04:59:24.381Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-11-11T04:59:25.027Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-11-11T04:59:25.027Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project cmpe188-group7 (cmpe188-group7) 
+[info] 
+=== Firestore Setup
+[debug] [2024-11-11T04:59:35.954Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T04:59:35.954Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T04:59:35.954Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cmpe188-group7/services/firestore.googleapis.com [none]
+[debug] [2024-11-11T04:59:35.954Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cmpe188-group7/services/firestore.googleapis.com x-goog-quota-user=projects/cmpe188-group7
+[debug] [2024-11-11T04:59:36.472Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cmpe188-group7/services/firestore.googleapis.com 200
+[debug] [2024-11-11T04:59:36.473Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cmpe188-group7/services/firestore.googleapis.com [omitted]
+[debug] [2024-11-11T04:59:36.473Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T04:59:36.473Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T04:59:36.473Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/(default) [none]
+[debug] [2024-11-11T04:59:36.710Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/(default) 404
+[debug] [2024-11-11T04:59:36.710Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/(default) {"error":{"code":404,"message":"Project 'cmpe188-group7' or database '(default)' does not exist.","status":"NOT_FOUND"}}
+[debug] [2024-11-11T04:59:36.710Z] error getting database type:  Request to https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/(default) had HTTP Error: 404, Project 'cmpe188-group7' or database '(default)' does not exist. {"name":"FirebaseError","children":[],"context":{"body":{"error":{"code":404,"message":"Project 'cmpe188-group7' or database '(default)' does not exist.","status":"NOT_FOUND"}},"response":{"statusCode":404}},"exit":1,"message":"Request to https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/(default) had HTTP Error: 404, Project 'cmpe188-group7' or database '(default)' does not exist.","status":404}
+[info] (default) does not exist in project cmpe188-group7.
+[debug] [2024-11-11T04:59:36.711Z] database_type: DATABASE_DOES_NOT_EXIST
+[debug] [2024-11-11T05:00:52.966Z] ----------------------------------------------------------------------
+[debug] [2024-11-11T05:00:52.970Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-11-11T05:00:52.971Z] CLI Version:   13.24.2
+[debug] [2024-11-11T05:00:52.971Z] Platform:      win32
+[debug] [2024-11-11T05:00:52.971Z] Node Version:  v22.8.0
+[debug] [2024-11-11T05:00:52.971Z] Time:          Sun Nov 10 2024 21:00:52 GMT-0800 (Pacific Standard Time)
+[debug] [2024-11-11T05:00:52.971Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-11-11T05:00:52.984Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-11-11T05:00:52.984Z] > authorizing via signed-in user (travis.peach@sjsu.edu)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  G:\Lets Learn\Coding\Firebase-Frontend\my-firebase-app
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-11-11T05:01:15.404Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T05:01:15.404Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T05:01:15.406Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-11-11T05:01:16.117Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-11-11T05:01:16.117Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project cmpe188-group7 (cmpe188-group7) 
+[info] 
+=== Firestore Setup
+[debug] [2024-11-11T05:01:19.241Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T05:01:19.241Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T05:01:19.241Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cmpe188-group7/services/firestore.googleapis.com [none]
+[debug] [2024-11-11T05:01:19.241Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cmpe188-group7/services/firestore.googleapis.com x-goog-quota-user=projects/cmpe188-group7
+[debug] [2024-11-11T05:01:19.784Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cmpe188-group7/services/firestore.googleapis.com 200
+[debug] [2024-11-11T05:01:19.784Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cmpe188-group7/services/firestore.googleapis.com [omitted]
+[debug] [2024-11-11T05:01:19.784Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T05:01:19.784Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T05:01:19.784Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/(default) [none]
+[debug] [2024-11-11T05:01:19.975Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/(default) 404
+[debug] [2024-11-11T05:01:19.976Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/(default) {"error":{"code":404,"message":"Project 'cmpe188-group7' or database '(default)' does not exist.","status":"NOT_FOUND"}}
+[debug] [2024-11-11T05:01:19.976Z] error getting database type:  Request to https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/(default) had HTTP Error: 404, Project 'cmpe188-group7' or database '(default)' does not exist. {"name":"FirebaseError","children":[],"context":{"body":{"error":{"code":404,"message":"Project 'cmpe188-group7' or database '(default)' does not exist.","status":"NOT_FOUND"}},"response":{"statusCode":404}},"exit":1,"message":"Request to https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/(default) had HTTP Error: 404, Project 'cmpe188-group7' or database '(default)' does not exist.","status":404}
+[info] (default) does not exist in project cmpe188-group7.
+[debug] [2024-11-11T05:01:19.977Z] database_type: DATABASE_DOES_NOT_EXIST
+[debug] [2024-11-11T05:01:27.628Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T05:01:27.628Z] Checked if tokens are valid: true, expires at: 1731303482884
+[debug] [2024-11-11T05:01:27.628Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/my-database [none]
+[debug] [2024-11-11T05:01:27.778Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/my-database 404
+[debug] [2024-11-11T05:01:27.778Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/my-database {"error":{"code":404,"message":"Project 'cmpe188-group7' or database 'my-database' does not exist.","status":"NOT_FOUND"}}
+[debug] [2024-11-11T05:01:27.778Z] error getting database type:  Request to https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/my-database had HTTP Error: 404, Project 'cmpe188-group7' or database 'my-database' does not exist. {"name":"FirebaseError","children":[],"context":{"body":{"error":{"code":404,"message":"Project 'cmpe188-group7' or database 'my-database' does not exist.","status":"NOT_FOUND"}},"response":{"statusCode":404}},"exit":1,"message":"Request to https://firestore.googleapis.com/v1/projects/cmpe188-group7/databases/my-database had HTTP Error: 404, Project 'cmpe188-group7' or database 'my-database' does not exist.","status":404}
+[info] my-database does not exist in project cmpe188-group7.
+[debug] [2024-11-11T05:01:27.779Z] database_type: DATABASE_DOES_NOT_EXIST

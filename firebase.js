@@ -4,18 +4,17 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'YOUR_API_KEY',
-  authDomain: 'YOUR_AUTH_DOMAIN',
-  projectId: 'YOUR_PROJECT_ID',
-  storageBucket: 'YOUR_STORAGE_BUCKET',
-  messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
-  appId: 'YOUR_APP_ID',
-};
+    apiKey: "AIzaSyDyEk_zWqV0pThv4ptAhheP0Xg6tSEdma4",
+    authDomain: "cmpe188-group7.firebaseapp.com",
+    databaseURL: "https://cmpe188-group7-default-rtdb.firebaseio.com",
+    projectId: "cmpe188-group7",
+    storageBucket: "cmpe188-group7.firebasestorage.app",
+    messagingSenderId: "201447971795",
+    appId: "1:201447971795:web:52b8b1644fa1729af4ed26"
+  };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize Firestore and Auth
 const db = getFirestore(app);
 const auth = getAuth(app);
 
