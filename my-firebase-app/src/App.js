@@ -1,65 +1,26 @@
 // src/App.js
-import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from './AuthProvider';
-import { db, auth } from './firebase';
-import { signOut } from 'firebase/auth';
-import {
-  collection,
-  addDoc,
-  onSnapshot,
-  query,
-  orderBy,
-} from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { database } from './firebase';
+import { ref, onValue } from 'firebase/database';
+import './App.css';
+
 
 function App() {
-  const { currentUser } = useContext(AuthContext);
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    if (!currentUser) return;
+    const itemsRef = ref(database, 'a');
 
-    const userItemsCollection = collection(db, 'users', currentUser.uid, 'items');
-    const q = query(userItemsCollection, orderBy('createdAt', 'desc'));
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const itemsData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setItems(itemsData);
+    onValue(itemsRef, (snapshot) => {
+      const data = snapshot.val();
+      const itemList = data ? Object.entries(data).map(([key, value]) => ({ id: key, name: value })) : [];
+      setItems(itemList);
     });
-
-    return () => unsubscribe();
-  }, [currentUser]);
-
-  const addItem = async () => {
-    const userItemsCollection = collection(db, 'users', currentUser.uid, 'items');
-    await addDoc(userItemsCollection, {
-      name: `Item ${items.length + 1}`,
-      createdAt: new Date(),
-    });
-  };
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    alert('Logged out successfully!');
-  };
-
-  if (!currentUser) {
-    return (
-      <div style={{ padding: '20px' }}>
-        <SignUp />
-        <Login />
-      </div>
-    );
-  }
+  }, []);
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Welcome, {currentUser.email}</h1>
-      <button onClick={handleLogout}>Logout</button>
-      <h2>Your Items</h2>
-      <button onClick={addItem}>Add Item</button>
+    <div className="app-container">
+      <h1>Clean My Air Sensor Data</h1>
       <ul>
         {items.map((item) => (
           <li key={item.id}>{item.name}</li>

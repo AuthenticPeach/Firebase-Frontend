@@ -36,3 +36,34 @@
     transform: rotate(360deg);
   }
 }
+
+.app-container {
+  padding: 20px;
+  background-color: #f0f8ff; /* Light blue background */
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #fff;
+  color: #333;
+  padding: 10px 15px;
+  margin: 5px 0;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
