@@ -8,9 +8,6 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Firebase-Frontend
     steps:
       - uses: actions/checkout@v4
 
