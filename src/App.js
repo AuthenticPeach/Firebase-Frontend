@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useEffect, useState } from 'react';
 import { database } from './firebase';
 import { ref, onValue } from 'firebase/database';
@@ -16,10 +15,27 @@ function App() {
     onValue(sensorsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        setTemperature(data['Temperature']);
-        setHumidity(data['Humidity Sensor']);
-        setGasLevel(data['Gas Sensor']);
+        const { Temperature, 'Humidity Sensor': Humidity, 'Gas Sensor': Gas } = data;
+        setTemperature(Temperature);
+        setHumidity(Humidity);
+        setGasLevel(Gas);
         setLastUpdated(new Date().toLocaleString());
+
+        // Check for poor readings and notify
+        const outOfBoundsSensors = [];
+        if (getTemperatureStatus(Temperature) === 'poor') {
+          outOfBoundsSensors.push('Temperature');
+        }
+        if (getHumidityStatus(Humidity) === 'poor') {
+          outOfBoundsSensors.push('Humidity');
+        }
+        if (getGasStatus(Gas) === 'poor') {
+          outOfBoundsSensors.push('Gas Level');
+        }
+
+        if (outOfBoundsSensors.length > 0) {
+          notifyUser(outOfBoundsSensors);
+        }
       }
     });
   }, []);
@@ -33,18 +49,18 @@ function App() {
     } else {
       return 'poor';
     }
-  }  
+  }
 
   function getHumidityStatus(hum) {
     if (hum === null) return '';
-    if (hum <= 20) {
+    if (hum < 20) {
       return 'good';
-    } else if (hum > 20 && hum <= 40) {
+    } else if (hum >= 20 && hum <= 40) {
       return 'moderate';
     } else {
       return 'poor';
     }
-  }  
+  }
 
   function getGasStatus(gas) {
     if (gas === null) return '';
@@ -55,7 +71,12 @@ function App() {
     } else {
       return 'poor';
     }
-  }  
+  }
+
+  function notifyUser(sensors) {
+    const sensorList = sensors.join(', ');
+    window.alert(`Warning: The following sensor(s) are in the "poor" range: ${sensorList}`);
+  }
 
   return (
     <div className="app-container">
