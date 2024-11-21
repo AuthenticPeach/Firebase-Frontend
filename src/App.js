@@ -9,24 +9,61 @@ function App() {
   const [gasLevel, setGasLevel] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [notification, setNotification] = useState(null);
-  const [notifiedSensors, setNotifiedSensors] = useState({}); // Track notified sensors
+  const [notifiedSensors, setNotifiedSensors] = useState({});
+  const [lastNotificationTime, setLastNotificationTime] = useState(0);
+
+  const NOTIFICATION_COOLDOWN_MS = 10000;
+
+  const handleNotifications = useCallback(({ Temperature, Humidity, Gas }) => {
+    const now = Date.now();
+    const outOfBoundsSensors = [];
+    const newNotifiedSensors = { ...notifiedSensors };
+
+    if (getTemperatureStatus(Temperature) === 'poor' && !notifiedSensors['Temperature']) {
+      outOfBoundsSensors.push('Temperature');
+      newNotifiedSensors['Temperature'] = true;
+    } else if (getTemperatureStatus(Temperature) !== 'poor') {
+      newNotifiedSensors['Temperature'] = false;
+    }
+
+    if (getHumidityStatus(Humidity) === 'poor' && !notifiedSensors['Humidity']) {
+      outOfBoundsSensors.push('Humidity');
+      newNotifiedSensors['Humidity'] = true;
+    } else if (getHumidityStatus(Humidity) !== 'poor') {
+      newNotifiedSensors['Humidity'] = false;
+    }
+
+    if (getGasStatus(Gas) === 'poor' && !notifiedSensors['Gas Level']) {
+      outOfBoundsSensors.push('Gas Level');
+      newNotifiedSensors['Gas Level'] = true;
+    } else if (getGasStatus(Gas) !== 'poor') {
+      newNotifiedSensors['Gas Level'] = false;
+    }
+
+    setNotifiedSensors(newNotifiedSensors);
+
+    if (outOfBoundsSensors.length > 0 && now - lastNotificationTime > NOTIFICATION_COOLDOWN_MS) {
+      setNotification(`Warning: The following sensor(s) are in the "poor" range: ${outOfBoundsSensors.join(', ')}`);
+      setLastNotificationTime(now);
+    }
+  }, [notifiedSensors, lastNotificationTime]);
 
   const checkMaintenanceReset = useCallback(async () => {
     const maintenanceRef = ref(database, 'Maintenance');
     const snapshot = await get(maintenanceRef);
     const now = Date.now();
-    const oneWeekInMs = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+    const oneWeekInMs = 7 * 24 * 60 * 60 * 1000;
 
     if (!snapshot.exists() || now - snapshot.val() >= oneWeekInMs) {
-      showNotification('Maintenance Reset: Performing a scheduled reset.');
-      set(maintenanceRef, now); // Update the timestamp for the last maintenance reset
+      setNotification('Maintenance Reset: Performing a scheduled reset.');
+      set(maintenanceRef, now);
     }
-  }, []); // No dependencies, so it won't recreate unnecessarily
+  }, []);
 
   useEffect(() => {
     const sensorsRef = ref(database, 'Sensors');
 
-    onValue(sensorsRef, (snapshot) => {
+    const unsubscribe = onValue(sensorsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const { Temperature, 'Humidity Sensor': Humidity, 'Gas Sensor': Gas } = data;
@@ -35,41 +72,14 @@ function App() {
         setGasLevel(Gas);
         setLastUpdated(new Date().toLocaleString());
 
-        // Check for poor readings and notify
-        const outOfBoundsSensors = [];
-        const newNotifiedSensors = { ...notifiedSensors };
-
-        if (getTemperatureStatus(Temperature) === 'poor' && !notifiedSensors['Temperature']) {
-          outOfBoundsSensors.push('Temperature');
-          newNotifiedSensors['Temperature'] = true; // Mark as notified
-        } else if (getTemperatureStatus(Temperature) !== 'poor') {
-          newNotifiedSensors['Temperature'] = false; // Reset notification state
-        }
-
-        if (getHumidityStatus(Humidity) === 'poor' && !notifiedSensors['Humidity']) {
-          outOfBoundsSensors.push('Humidity');
-          newNotifiedSensors['Humidity'] = true;
-        } else if (getHumidityStatus(Humidity) !== 'poor') {
-          newNotifiedSensors['Humidity'] = false;
-        }
-
-        if (getGasStatus(Gas) === 'poor' && !notifiedSensors['Gas Level']) {
-          outOfBoundsSensors.push('Gas Level');
-          newNotifiedSensors['Gas Level'] = true;
-        } else if (getGasStatus(Gas) !== 'poor') {
-          newNotifiedSensors['Gas Level'] = false;
-        }
-
-        setNotifiedSensors(newNotifiedSensors);
-
-        if (outOfBoundsSensors.length > 0) {
-          showNotification(`Warning: The following sensor(s) are in the "poor" range: ${outOfBoundsSensors.join(', ')}`);
-        }
+        handleNotifications({ Temperature, Humidity, Gas });
       }
     });
 
-    checkMaintenanceReset(); // Check if it's time for a maintenance reset
-  }, [notifiedSensors, checkMaintenanceReset]); // Add checkMaintenanceReset to the dependency array
+    checkMaintenanceReset();
+
+    return () => unsubscribe();
+  }, [handleNotifications, checkMaintenanceReset]);
 
   function getTemperatureStatus(temp) {
     if (temp === null) return '';
@@ -104,21 +114,13 @@ function App() {
     }
   }
 
-  function showNotification(message) {
-    setNotification(message);
-  }
-
-  function closeNotification() {
-    setNotification(null);
-  }
-
   return (
     <div className="app-container">
       <h1>Clean My Air Sensor Data</h1>
       {notification && (
         <div className="notification">
           <span>{notification}</span>
-          <button className="close-btn" onClick={closeNotification}>×</button>
+          <button className="close-btn" onClick={() => setNotification(null)}>×</button>
         </div>
       )}
       <div className="sensor-container">
