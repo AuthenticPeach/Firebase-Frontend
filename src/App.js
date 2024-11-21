@@ -12,7 +12,7 @@ function App() {
   const [notifiedSensors, setNotifiedSensors] = useState({});
   const [lastNotificationTime, setLastNotificationTime] = useState(0);
 
-  const NOTIFICATION_COOLDOWN_MS = 10000;
+  const NOTIFICATION_COOLDOWN_MS = 30000;
 
   const handleNotifications = useCallback(({ Temperature, Humidity, Gas }) => {
     const now = Date.now();
