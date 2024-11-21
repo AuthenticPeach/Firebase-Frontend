@@ -9,7 +9,6 @@ function App() {
   const [gasLevel, setGasLevel] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [notification, setNotification] = useState(null);
-  const [notifiedSensors, setNotifiedSensors] = useState({});
   const [lastNotificationTime, setLastNotificationTime] = useState(0);
 
   const NOTIFICATION_COOLDOWN_MS = 30000;
@@ -17,36 +16,44 @@ function App() {
   const handleNotifications = useCallback(({ Temperature, Humidity, Gas }) => {
     const now = Date.now();
     const outOfBoundsSensors = [];
-    const newNotifiedSensors = { ...notifiedSensors };
 
-    if (getTemperatureStatus(Temperature) === 'poor' && !notifiedSensors['Temperature']) {
+    // Abnormal value checks
+    const abnormalSensors = [];
+    if (Temperature < -50 || Temperature > 150) {
+      abnormalSensors.push('Temperature');
+    }
+    if (Humidity < 0 || Humidity > 100) {
+      abnormalSensors.push('Humidity');
+    }
+    if (Gas < 0) {
+      abnormalSensors.push('Gas Level');
+    }
+
+    if (abnormalSensors.length > 0) {
+      setNotification(
+        `Abnormal readings detected from: ${abnormalSensors.join(', ')}. Please check the sensor and reset your device.`
+      );
+      return;
+    }
+
+    // Poor range checks
+    if (getTemperatureStatus(Temperature) === 'poor') {
       outOfBoundsSensors.push('Temperature');
-      newNotifiedSensors['Temperature'] = true;
-    } else if (getTemperatureStatus(Temperature) !== 'poor') {
-      newNotifiedSensors['Temperature'] = false;
     }
-
-    if (getHumidityStatus(Humidity) === 'poor' && !notifiedSensors['Humidity']) {
+    if (getHumidityStatus(Humidity) === 'poor') {
       outOfBoundsSensors.push('Humidity');
-      newNotifiedSensors['Humidity'] = true;
-    } else if (getHumidityStatus(Humidity) !== 'poor') {
-      newNotifiedSensors['Humidity'] = false;
     }
-
-    if (getGasStatus(Gas) === 'poor' && !notifiedSensors['Gas Level']) {
+    if (getGasStatus(Gas) === 'poor') {
       outOfBoundsSensors.push('Gas Level');
-      newNotifiedSensors['Gas Level'] = true;
-    } else if (getGasStatus(Gas) !== 'poor') {
-      newNotifiedSensors['Gas Level'] = false;
     }
-
-    setNotifiedSensors(newNotifiedSensors);
 
     if (outOfBoundsSensors.length > 0 && now - lastNotificationTime > NOTIFICATION_COOLDOWN_MS) {
-      setNotification(`Warning: The following sensor(s) are in the "poor" range: ${outOfBoundsSensors.join(', ')}`);
+      setNotification(
+        `Warning: The following sensor(s) are in the "poor" range: ${outOfBoundsSensors.join(', ')}`
+      );
       setLastNotificationTime(now);
     }
-  }, [notifiedSensors, lastNotificationTime]);
+  }, [lastNotificationTime]);
 
   const checkMaintenanceReset = useCallback(async () => {
     const maintenanceRef = ref(database, 'Maintenance');
