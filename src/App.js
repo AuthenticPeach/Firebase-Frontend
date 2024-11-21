@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { database } from './firebase';
 import { ref, onValue, set, get } from 'firebase/database';
 import './App.css';
@@ -10,6 +10,18 @@ function App() {
   const [lastUpdated, setLastUpdated] = useState(null);
   const [notification, setNotification] = useState(null);
   const [notifiedSensors, setNotifiedSensors] = useState({}); // Track notified sensors
+
+  const checkMaintenanceReset = useCallback(async () => {
+    const maintenanceRef = ref(database, 'Maintenance');
+    const snapshot = await get(maintenanceRef);
+    const now = Date.now();
+    const oneWeekInMs = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+
+    if (!snapshot.exists() || now - snapshot.val() >= oneWeekInMs) {
+      showNotification('Maintenance Reset: Performing a scheduled reset.');
+      set(maintenanceRef, now); // Update the timestamp for the last maintenance reset
+    }
+  }, []); // No dependencies, so it won't recreate unnecessarily
 
   useEffect(() => {
     const sensorsRef = ref(database, 'Sensors');
@@ -48,7 +60,7 @@ function App() {
           newNotifiedSensors['Gas Level'] = false;
         }
 
-        setNotifiedSensors(newNotifiedSensors); 
+        setNotifiedSensors(newNotifiedSensors);
 
         if (outOfBoundsSensors.length > 0) {
           showNotification(`Warning: The following sensor(s) are in the "poor" range: ${outOfBoundsSensors.join(', ')}`);
@@ -57,7 +69,7 @@ function App() {
     });
 
     checkMaintenanceReset(); // Check if it's time for a maintenance reset
-  }, [notifiedSensors]);
+  }, [notifiedSensors, checkMaintenanceReset]); // Add checkMaintenanceReset to the dependency array
 
   function getTemperatureStatus(temp) {
     if (temp === null) return '';
@@ -98,18 +110,6 @@ function App() {
 
   function closeNotification() {
     setNotification(null);
-  }
-
-  async function checkMaintenanceReset() {
-    const maintenanceRef = ref(database, 'Maintenance');
-    const snapshot = await get(maintenanceRef);
-    const now = Date.now();
-    const oneWeekInMs = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
-
-    if (!snapshot.exists() || now - snapshot.val() >= oneWeekInMs) {
-      showNotification('Maintenance Reset: Performing a scheduled reset.');
-      set(maintenanceRef, now); // Update the timestamp for the last maintenance reset
-    }
   }
 
   return (
